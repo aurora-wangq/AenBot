@@ -8,7 +8,7 @@ import urllib
 from nonebot.params import CommandArg
 import random
 from nonebot.adapters.onebot.v11.helpers import Cooldown
-chat = on_message()
+chat = on_message(priority=99)
 @chat.handle()
 async def _(event:Event):
     openai.api_key=""
