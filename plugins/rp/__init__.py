@@ -4,6 +4,7 @@ from nonebot.adapters.onebot.v11 import *
 from nonebot.plugin import PluginMetadata
 
 import json
+import hashlib
 import random
 import os
 
@@ -37,15 +38,19 @@ except FileNotFoundError:
 
 rp = on_command("rp", block=True)
 
+def get_rp(userid):
+    date = datetime.today()
+    s = f"{date.year}||{date.month}||{date.day}@@{userid}"
+    hash = hashlib.md5(s.encode('utf8')).hexdigest()
+    return int(hash, 16) % 100 + 1
+
 @rp.handle()
 async def _(event: Event):
-    date = datetime.today()
-    x = int(int(event.user_id) * date.day % 100)
+    x = get_rp(event.user_id)
     s = [ i['text'] for i in db if i['range'][0] <= x and x <= i['range'][1] ]
-
     params = {
         'at_self': MessageSegment.at(event.user_id),
-        'rp': int(int(event.user_id) * date.day % 100)
+        'rp': x
     }
 
     await rp.finish(Message.template(random.choice(s)).format_map(params))
