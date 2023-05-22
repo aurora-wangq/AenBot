@@ -9,6 +9,11 @@ from nonebot.params import CommandArg
 import random
 from nonebot.adapters.onebot.v11.helpers import Cooldown
 
+from .config import Config
+
+global_config = get_driver().config
+config = Config.parse_obj(global_config)
+
 chat = on_message()
 
 Message_count = 0
@@ -29,7 +34,7 @@ async def _(event:Event):
             Chat_Standard = random.randint(4,7)
     
             if Message_count >= Chat_Standard:
-                openai.api_key=""
+                openai.api_key=global_config.openai_apikey
                 messages = []
                 user_message_dict = {"role": "user","content": Presets + Message_content}
                 messages.append(user_message_dict)
