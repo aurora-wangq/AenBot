@@ -29,7 +29,7 @@ async def _(event:Event):
             Chat_Standard = random.randint(4,7)
     
             if Message_count >= Chat_Standard:
-                openai.api_key="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"
+                openai.api_key=""
                 messages = []
                 user_message_dict = {"role": "user","content": Presets + Message_content}
                 messages.append(user_message_dict)
